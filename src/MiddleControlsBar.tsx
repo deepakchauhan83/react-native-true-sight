@@ -40,16 +40,16 @@ export default class MiddleControlsBar extends React.PureComponent<Props, null>{
 
   render() {
     return (
-      <View style={styles.barWrapper}>
-        {this.props.isPaused ? (
-          <PlayerIcon iconSource={playerPlay} onPress={this.props.setPlaying} />
-        ) : (
-            <PlayerIcon iconSource={playerPause} onPress={this.props.setPaused} />
+        <View style={styles.barWrapper}>
+          {this.props.isPaused ? (
+              <PlayerIcon iconSource={playerPlay} onPress={this.props.setPlaying} />
+          ) : (
+              <PlayerIcon iconSource={playerPause} onPress={this.props.setPaused} />
           )}
-        {this.props.restartButton && (
-          <PlayerIcon iconSource={playerRestart} onPress={this.restartVideo} />
-        )}
-      </View>
+          {this.props.restartButton && (
+              <PlayerIcon iconSource={playerRestart} onPress={this.restartVideo} />
+          )}
+        </View>
     )
   }
 }

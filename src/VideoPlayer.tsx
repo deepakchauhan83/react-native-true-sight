@@ -62,7 +62,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
   }
 
   static defaultProps = {
-    autoStart: true,
+    autoStart: false,
     onError: noop,
     onProgress: noop,
     onEnd: noop
@@ -129,8 +129,8 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     const controlsDisplayed =
-      prevState.showControls !== this.state.showControls &&
-      this.state.showControls === true
+        prevState.showControls !== this.state.showControls &&
+        this.state.showControls === true
 
     // Defined whether of not trigger controls auto-hide.
     switch (true) {
@@ -215,49 +215,53 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
     const baseControlsBarProps = {
       currentTime,
       totalTime,
-      isPaused,
+      isPaused: this.state.isPaused,
       setPlaying: this.setPlaying,
       setPaused: this.setPaused,
       setPosition: this.setPosition
     }
 
     return (
-      <TouchableWithoutFeedback onPress={this.toggleControls}>
-        <View style={[styles.wrapper, this.props.extwrapper]}>
-          <View style={[styles.loaderWrapper, this.props.extloaderWrapper]} pointerEvents="none">
-            {isLoading ? <Loader /> : null}
+        <TouchableWithoutFeedback onPress={this.toggleControls}>
+          <View style={[styles.wrapper, this.props.extwrapper]}>
+
+            <View style={[styles.loaderWrapper, this.props.extloaderWrapper]} pointerEvents="none">
+              {isLoading ? <Loader /> : null}
+            </View>
+
+            <Animated.View
+                style={[styles.controls, { opacity: this.controlsFadeValue }]}
+                pointerEvents={showControls ? undefined : 'none'}>
+              <View style={styles.middleControlsBar}>
+                <MiddleControlsBar
+                    {...middleControlsBarProps}
+                    {...baseControlsBarProps}
+                    isPaused={this.state.isPaused}
+                />
+              </View>
+              <View style={styles.bottomControlsBar}>
+                <BottomControlsBar
+                    {...bottomControlsBarProps}
+                    {...baseControlsBarProps}
+                    uri={source}
+                    player={this.player}
+                />
+              </View>
+            </Animated.View>
+            <Video
+                ref={player => (this.player = player)}
+                source={{ uri: source }}
+                style={styles.backgroundVideo}
+                resizeMode="contain"
+                paused={this.state.isPaused}
+                onError={onError}
+                onLoad={this.onLoad}
+                onProgress={this.onProgress}
+                onEnd={this.onEnd}
+                playWhenInactive={false}
+            />
           </View>
-          <Animated.View
-            style={[styles.controls, { opacity: this.controlsFadeValue }]}
-            pointerEvents={showControls ? undefined : 'none'}>
-            <View style={styles.middleControlsBar}>
-              <MiddleControlsBar
-                {...middleControlsBarProps}
-                {...baseControlsBarProps}
-              />
-            </View>
-            <View style={styles.bottomControlsBar}>
-              <BottomControlsBar
-                {...bottomControlsBarProps}
-                {...baseControlsBarProps}
-                uri={source}
-                player={this.player}
-              />
-            </View>
-          </Animated.View>
-          <Video
-            ref={player => (this.player = player)}
-            source={{ uri: source }}
-            style={styles.backgroundVideo}
-            resizeMode="contain"
-            paused={isPaused}
-            onError={onError}
-            onLoad={this.onLoad}
-            onProgress={this.onProgress}
-            onEnd={this.onEnd}
-          />
-        </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
     )
   }
 }
