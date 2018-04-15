@@ -119,6 +119,7 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
               name="fullscreen"
               size={32}
           />
+        </TouchableOpacity>
       </View>
     )
   }
