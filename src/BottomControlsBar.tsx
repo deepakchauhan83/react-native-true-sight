@@ -84,17 +84,17 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
   }
 
   onToggleFullScreen() {
-    if(Platform.OS === "android")
-    {
+    if(Platform.OS === "android") {
+      this.props.setPaused();
       NativeModules.BridgeModule.showFullscreen(this.props.uri);
-    }
-    else
-    {
+    } else  {
+      this.props.setPaused();
       this.props.player.presentFullscreenPlayer();
     }
   }
 
   render() {
+    const { customStyles } = this.props;
     return (
       <View style={styles.barWrapper}>
         <Text style={styles.currentTime}>
