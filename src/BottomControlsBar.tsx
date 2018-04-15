@@ -1,5 +1,6 @@
 import * as React from "react";
-import { View, Text, Slider, StyleSheet } from "react-native"
+import { View, Text, Slider, StyleSheet, TouchableOpacity, Platform, NativeModules  } from "react-native"
+import Icon from 'react-native-vector-icons/MaterialIcons'
 import * as PropTypes from "prop-types";
 
 interface Props {
@@ -34,7 +35,8 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
   }
 
   static defaultProps = {
-    navigationAllowed: true
+    navigationAllowed: true,
+    customStyles: {}
   }
 
   public hasMovedSlider: boolean
@@ -48,6 +50,7 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
 
     this.onSliderTouch = this.onSliderTouch.bind(this)
     this.onSlidingComplete = this.onSlidingComplete.bind(this)
+    this.onToggleFullScreen = this.onToggleFullScreen.bind(this);
   }
 
   /**
@@ -80,6 +83,17 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
     }
   }
 
+  onToggleFullScreen() {
+    if(Platform.OS === "android")
+    {
+      NativeModules.BridgeModule.showFullscreen(this.props.uri);
+    }
+    else
+    {
+      this.props.player.presentFullscreenPlayer();
+    }
+  }
+
   render() {
     return (
       <View style={styles.barWrapper}>
@@ -99,6 +113,12 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
         <Text style={styles.totalTime}>
           {this.secondsToMS(this.props.totalTime)}
         </Text>
+        <TouchableOpacity onPress={this.onToggleFullScreen} style={customStyles.controlButton}>
+          <Icon
+              style={[styles.extraControl, customStyles.controlIcon]}
+              name="fullscreen"
+              size={32}
+          />
       </View>
     )
   }
