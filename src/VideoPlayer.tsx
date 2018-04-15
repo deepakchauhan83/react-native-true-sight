@@ -223,8 +223,8 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
 
     return (
       <TouchableWithoutFeedback onPress={this.toggleControls}>
-        <View style={styles.wrapper, this.props.extwrapper}>
-          <View style={styles.loaderWrapper, this.props.extloaderWrapper} pointerEvents="none">
+        <View style={[styles.wrapper, this.props.extwrapper]}>
+          <View style={[styles.loaderWrapper, this.props.extloaderWrapper]} pointerEvents="none">
             {isLoading ? <Loader /> : null}
           </View>
           <Animated.View
