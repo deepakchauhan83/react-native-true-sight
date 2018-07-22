@@ -109,7 +109,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.toggleControls()
+    //this.toggleControls()
   }
 
   componentWillUnmount() {
