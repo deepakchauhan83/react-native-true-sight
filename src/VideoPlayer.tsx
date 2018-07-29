@@ -13,7 +13,7 @@ import DefaultMiddleControlsBar from './MiddleControlsBar'
 import DefaultBottomControlsBar from './BottomControlsBar'
 
 const noop: () => void = () => { }
-
+global.VideoPlayerObject = null;
 interface Props {
   source: string;
   autoStart: boolean;
@@ -166,6 +166,19 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
   }
 
   onProgress(meta: ProgressStatus) {
+    
+    if(this.player.state.showPoster) {
+            this.player.setState({showPoster:false});
+            this.setState({
+                showControls: false
+            });
+    }
+
+    try {
+        global.VideoPlayerObject = this;
+
+    } catch(e) {console.log(e);}
+    
     const currentTime = Math.floor(meta.currentTime)
 
     if (currentTime !== this.state.currentTime) {
