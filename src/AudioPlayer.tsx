@@ -168,7 +168,7 @@ export default class AudioPlayer extends React.PureComponent<Props, State> {
   onProgress(meta: ProgressStatus) {
     
     if(this.player.state.showPoster) {
-            this.player.setState({showPoster:false});
+            //this.player.setState({showPoster:false});
             this.setState({
                 showControls: false
             });
